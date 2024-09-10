@@ -26,11 +26,14 @@
   // Connect to the WebSocket server and listen for events
   onMount(() => {
     socket = new WebSocket('ws://localhost:8080'); // Connect to WebSocket on port 8080
-
     socket.onmessage = (event) => {
       if (event.data === 'dropBall') {
         console.log('Ball drop triggered from server');
         $plinkoEngine?.dropBall();
+      }
+      if (event.data === 'increaseBet') {
+        console.log('bet is increased');
+        $betAmount += 0.01;
       }
     };
 

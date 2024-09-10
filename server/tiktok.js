@@ -2,7 +2,7 @@ const { WebcastPushConnection } = require('tiktok-live-connector'); // CommonJS 
 const WebSocket = require('ws'); // Use WebSocket for communication with the front-end
 const wss = new WebSocket.Server({ port: 8080 }); // Create WebSocket server on port 8080
 
-let tiktokUsername = 'noradin_muhamad_oficial';
+let tiktokUsername = 'gamingpro993';
 let tiktokLiveConnection = new WebcastPushConnection(tiktokUsername);
 
 tiktokLiveConnection
@@ -32,4 +32,21 @@ tiktokLiveConnection.on('gift', (data) => {
       client.send('dropBall'); // Send message to WebSocket clients
     }
   });
+});
+
+tiktokLiveConnection.on('like', (data) => {
+  console.log(`${data.uniqueId} sent ${data.likeCount} likes, total likes: ${data.totalLikeCount}`);
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send('increaseBet'); // Send message to WebSocket clients
+    }
+  });
+});
+
+tiktokLiveConnection.on('follow', (data) => {
+  console.log(data.uniqueId, 'followed!');
+});
+
+tiktokLiveConnection.on('share', (data) => {
+  console.log(data.uniqueId, 'shared the stream!');
 });
